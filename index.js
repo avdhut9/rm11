@@ -17,7 +17,7 @@ app.post("/signup",async(req,res)=>{
     const hash=await argon2.hash(req.body.password);
 try{
     const user=await Usermodel.create({...req.body,password:hash})
-    return res.send("user signed up successfully")
+    return res.send({message:"user signed up successfully"})
 }catch(e){
     return res.send(e.message)
 }
