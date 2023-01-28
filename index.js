@@ -6,9 +6,13 @@ const PORT=process.env.PORT||8080;
 const connect=require("./src/config/connect")
 const refresh=require("./src/models/user.route")
 const argon2 = require('argon2');
+const secure=require("./src/models/secure.route")
+const cors=require("cors")
 const app=express();
 app.use(express.json())
+app.use(cors())
 app.use("/refresh",refresh)
+app.use("/user",secure)
 app.get("/",async(req,res)=>{
     const user=await Usermodel.find();
     res.send("welcome to server")
