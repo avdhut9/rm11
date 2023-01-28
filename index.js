@@ -11,7 +11,7 @@ app.use(express.json())
 app.use("/refresh",refresh)
 app.get("/",async(req,res)=>{
     const user=await Usermodel.find();
-    res.send(user)
+    res.send("welcome to server")
    })
 app.post("/signup",async(req,res)=>{
     const hash=await argon2.hash(req.body.password);
