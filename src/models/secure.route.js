@@ -4,7 +4,10 @@ const Usermodel=require("./user.model")
 const BMImodel=require("./bmi.model")
 const jwt=require("jsonwebtoken")
 const middleware=require("../middleware/checkmiddleware")
+const cors=require("cors")
 app.use(middleware)
+app.use(cors())
+app.use(express.json())
 app.get("/",async(req,res)=>{
     res.send("ok")
 })
@@ -13,7 +16,7 @@ app.post("/getprofile",async(req,res)=>{
    const decode=jwt.decode(token,"avdhut@0511");
    if(decode.email){
 let user=decode.email;
-let info=await Usermodel.find({email:user},{password:0});
+let info=await Usermodel.findOne({email:user},{password:0});
 return res.send(info)
    }else{
     return res.send("error")
@@ -22,13 +25,15 @@ return res.send(info)
      
 })
 app.post("/calculateBMI",async(req,res)=>{
-    const {token}=req.headers
-    const{weight,height}=req.body;
-    const BMI=Number(weight)/(Number(height)*Number(height));
+    const {token}=req.headers;
+   let{weight,height}=req.body;
+
+   
+    let BMI=weight/(height*height);
     const decode=jwt.decode(token,"avdhut@0511");
     if(decode.email){
         let user=decode.email;
-       const allbmi=await BMImodel.create({weight:Number(weight),height:Number(height),BMI:BMI,email:user})
+       const allbmi=await BMImodel.create({weight:weight,height:height,BMI:BMI,email:user})
         return res.send({BMI:BMI})
            }else{
             return res.send("error")

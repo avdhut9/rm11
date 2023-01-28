@@ -2,6 +2,7 @@ const jwt=require("jsonwebtoken");
 
 const middleware=async(req,res,next)=>{
     const {token}=req.headers;
+    
     if(!token){
         return res.send("unauthorized")
     }try{
